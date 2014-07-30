@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload</title>
+
+    <!--bootstrap-->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!--lightbox-->
+	<script src="/static/js/jquery-1.11.0.min.js"></script>
+    <script src="/static/js/lightbox.min.js"></script>
+    <link href="/static/css/lightbox.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/static/css/screen.css">
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!--fliexslider-->
+	<link rel="stylesheet" href="/static/css/flexslider.css" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<!--<script src="/static/js/jquery-1.11.0.min.jsscript"></script>-->
+	<script src="/static/js/jquery.flexslider-min.js"></script>
+	<!--<link href="/static/css/flexslider.css" rel="stylesheet" /-->
+
+ 
+	<script type="text/javascript" charset="utf-8">
+	$(window).load(function() {
+		$('.flexslider').flexslider({
+			animation: "slide"
+		});
+	});
+	</script>
+
+    <style type="text/css">
+	body {
+
+		background: url("http://blogs.r.ftdata.co.uk/tech-blog/files/2013/09/Twitter.jpg");
+    	color: white;
+    	font-family: Helvetica;
+    	background-size: cover;
+    	background-position: center center;
+    	background-repeat: no-repeat;
+    	background-attachment: fixed;
+
+	}
+
+	 #title {
+		font-size: 50px;
+		font-family: Helvetica;
+		text-align: center;
+		font-weight: bold;
+		background-color: #0091be;
+		color: #e8d3be;
+		border-radius: 4px;
+		border-style: solid;
+		border-color: #ecded1;
+
+    }
+
+	.image {
+
+		text-align: center;
+		font-family: Helvetica;
+		position: center;
+		display: center;
+
+	}
+
+	.container_for_flex{
+		height: 400px;
+		width: 600px;
+		margin: auto;
+
+	}
+
+	.flexslider {
+		height: 400px;
+		width: 600px;
+		margin: auto;
+
+	}
+
+	.slides {
+
+		height: 400px;
+		width: 600px;
+		margin: auto;
+
+	}
+/*
+	.up{
+
+		height: 20px;
+		widows: 50px;
+		padding: 0px;
+		background-color: red;
+
+	}*/
+
+	.flexslider .slides li {
+		
+		position: relative;
+
+
+	}
+
+	.flex-caption {
+		position: absolute;
+		left: 5px;
+		top : 350px;
+		background: rgba(0,0,0,0.5);
+		z-index: 2;
+		padding: 5px;
+		font-family: helvetica;
+		font-size: 30px;
+		color: white;
+
+	}
+
+	.delete {
+
+
+		position: absolute;
+		right: 5px;
+		top: 350px;
+		z-index: 2;
+
+
+	}
+	.img{
+		height: 390px;
+		z-index:1;
+	}
+    </style>
+</head>
+<body>
+
+	<h1 id="title">Mini Twitter</h1>
+	
+	
+	<div class="image">
+	
+	<a class="example-image-link" href="https://pbs.twimg.com/profile_images/2284174624/4l5krl3re8cpp0nfsgw6.png" data-lightbox="example-set"><img  src="https://pbs.twimg.com/profile_images/2284174624/4l5krl3re8cpp0nfsgw6.png" width="300px"></a>
+
+	{% if up_data %}
+
+	<a class="img_upload" href="/show/{{ up_data.key() }}" data-lightbox="photo"><img src="/show/{{ up_data.key() }}" data-title="kim jeong hyeon" style="color: #FFFFFF" width="300px"></a><br>
+	
+	{{up_data.text}}
+
+
+	{% endif %}
+	</div>
+
+	<form action="{{ url_for('upload_db') }}" enctype="multipart/form-data" method="POST">
+		<input type="file" name="photoo" class="up"><br>
+		<input type="text" name="text" style="color:black"><br>
+		<input class="btn btn-info" type="submit" value="submit">
+	</form>
+	
+	<div class="container_for_flex">
+		<div class="flexslider">
+			<ul class="slides">
+
+				{% if all_data %}
+				{% for i in all_data %}
+				<li>
+					<img class="img" src="/show/{{i.key()}}">
+					<p class="flex-caption">{{ i.text }}</p>
+					<form action="/delete" method="POST">	
+						<input type="submit" value="delete" class="delete btn btn-info">
+						<input type="hidden" value={{i.key()}} name="delete">
+					</form>				
+				</li>
+
+				{% endfor %}
+				{% endif %}	
+
+			</ul>
+
+		</div>
+	</div>
+
+	<br>
+	<br>
+
+</body>
+
+</html>
